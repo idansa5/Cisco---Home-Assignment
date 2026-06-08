@@ -1,0 +1,19 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Env / secrets
+.env
+
+# Redis persistence files (generated at runtime)
+dump.rdb
+appendonly.aof
+
+# OS
+.DS_Store
