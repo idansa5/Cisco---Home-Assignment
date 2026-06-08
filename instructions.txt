@@ -1,0 +1,34 @@
+We want to build an automatic Code Review Platform!
+We'll start with a simple POC, that will show the full E2E flow - requesting a scan, analyzing the code, and fetching the results.
+
+The system is comprised of 2 parts:
+      • The Code-Reviewer: given a source code file (python), it runs a set of pre-defined singular checks (each defined using a prompt) against the code and identifies to which rules the code adheres to and to which it doesn't.
+      • The Platform: gets a scan request from the user (containing the code file) via API, scans it (using the Code-Reviewer), and makes its output accessible for fetching via a dedicated API. 
+
+Rules to be checked:
+      1) All variables have meaningful names
+      2)  docstring of function reflects the actual code’s logic
+
+Requirements:
+      1) Rules might be added overtime and total analysis time might exceed connection limitations, therefore scan requesting and results fetching must be separated (asynchronous).
+      2) Scan results should show users the list of all checked rules, and for each whether it is adhered to or not (TRUE/FALSE)
+      3) System should support up to 5 parallel scans. For POC, scan requests received while no available capacity can be ignored with error reflected to user (so they can try again).
+      4) Results should be stored in a local database
+      5) Scan results should be stored for 24 hours, after which it should be deleted.
+      6) For cost and performance optimization, if reuse of existing results is possible - it is preferred.
+
+Technical Constraints:
+   •   For POC purposes, LLM usage should be done locally using ollama using any model to your choosing (LM Studio is also possible). 
+Please make sure connection to model provider and model details are parametrized to allow easy replacement for testing / future replacement.
+
+The system should support the above functionality and work correctly.
+Any further optimizations for performance, cost, scalability, security, user management, etc. are not part of assignment scope - but the implementation should be future-ready as possible to allow accommodating those later.
+
+Everything should be running locally, with no usage of cloud assets at all. 
+
+The project should be submitted through a GitHub repository. Repository should include a readme.md file explaining how to successfully execute the program.
+
+Usage of AI for implementing is allowed and even recommended. 
+The full conversation (prompts) are expected to be delivered as well.
+
+Once ready, reply to this email and include the link to the repository (make sure sufficient permissions to it exist) and the prompts used.

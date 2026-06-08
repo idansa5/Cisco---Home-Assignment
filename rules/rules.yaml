@@ -1,0 +1,23 @@
+# Rule definitions — add new rules here; no code changes needed.
+# Each rule is checked independently against the submitted code via one LLM call.
+rules:
+  - id: meaningful_variable_names
+    name: "All variables have meaningful names"
+    prompt: |
+      You are a code reviewer. Analyze the following Python code and determine whether
+      ALL variables have meaningful, descriptive names (not single letters like x, y, i
+      unless used as conventional loop counters, and not vague names like 'data', 'temp',
+      'val', 'result' without context).
+
+      Respond with valid JSON only, no explanation, no markdown. Use this exact schema:
+      {"passed": true} or {"passed": false}
+
+  - id: docstring_matches_logic
+    name: "Docstring of function reflects the actual code logic"
+    prompt: |
+      You are a code reviewer. Analyze the following Python code and focus in its logic, determine whether
+      every function's docstring accurately describes what the function actually does.
+      If there are no functions, respond with {"passed": true}.
+
+      Respond with valid JSON only, no explanation, no markdown. Use this exact schema:
+      {"passed": true} or {"passed": false}
