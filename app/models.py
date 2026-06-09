@@ -21,7 +21,21 @@ class RuleResult(BaseModel):
 class ScanRecord(BaseModel):
     scan_id: str
     code_hash: str
+    ruleset_version: str
     status: ScanStatus
     created_at: str
+    results: Optional[list[RuleResult]] = None
+    error: Optional[str] = None
+
+
+class ScanSubmitResponse(BaseModel):
+    scan_id: str
+    status: ScanStatus
+    reused: bool = False
+
+
+class ScanStatusResponse(BaseModel):
+    scan_id: str
+    status: ScanStatus
     results: Optional[list[RuleResult]] = None
     error: Optional[str] = None

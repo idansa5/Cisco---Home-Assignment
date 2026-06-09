@@ -14,7 +14,7 @@ from app.store.redis_store import make_store
 logger = logging.getLogger(__name__)
 
 
-def run_scan(scan_id: str, code: str) -> None:
+def run_scan(scan_id: str, code: str, ruleset_version: str) -> None:
     """RQ job entrypoint — called by the worker process."""
     store = make_store(settings.redis_url)
     client = OllamaClient(settings.ollama_base_url, settings.ollama_model)

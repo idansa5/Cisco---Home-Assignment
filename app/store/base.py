@@ -7,7 +7,7 @@ from app.models import RuleResult, ScanRecord
 
 @runtime_checkable
 class ResultStore(Protocol):
-    def create(self, scan_id: str, code_hash: str, ttl_seconds: int) -> None:
+    def create(self, scan_id: str, code_hash: str, ruleset_version: str, ttl_seconds: int) -> None:
         """Persist a new scan record in the queued state."""
         ...
 

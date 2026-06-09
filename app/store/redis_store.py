@@ -22,10 +22,11 @@ class RedisResultStore:
     # Public interface (matches store/base.py ResultStore protocol)
     # ------------------------------------------------------------------
 
-    def create(self, scan_id: str, code_hash: str, ttl_seconds: int) -> None:
+    def create(self, scan_id: str, code_hash: str, ruleset_version: str, ttl_seconds: int) -> None:
         record = ScanRecord(
             scan_id=scan_id,
             code_hash=code_hash,
+            ruleset_version=ruleset_version,
             status=ScanStatus.queued,
             created_at=datetime.now(timezone.utc).isoformat(),
         )

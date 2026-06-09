@@ -75,18 +75,18 @@ def test_enqueue_raises_capacity_error_when_full():
     q = make_fake_queue()
     with patch("app.queue.is_at_capacity", return_value=True):
         with pytest.raises(CapacityError):
-            enqueue_scan("scan-1", "code", q=q)
+            enqueue_scan("scan-1", "code", "rv-1", q=q)
 
 
 def test_enqueue_returns_job_id_when_under_capacity():
     q = make_fake_queue()
     with patch("app.queue.is_at_capacity", return_value=False):
-        job_id = enqueue_scan("scan-1", "code", q=q)
+        job_id = enqueue_scan("scan-1", "code", "rv-1", q=q)
     assert isinstance(job_id, str)
 
 
 def test_enqueue_does_not_raise_when_under_capacity():
     q = make_fake_queue()
     with patch("app.queue.is_at_capacity", return_value=False):
-        enqueue_scan("scan-1", "code", q=q)
+        enqueue_scan("scan-1", "code", "rv-1", q=q)
     assert q.count == 1
