@@ -17,3 +17,7 @@ appendonly.aof
 
 # OS
 .DS_Store
+
+#md files
+PLAN.md
+implementation_plan 2.md
