@@ -115,6 +115,10 @@ pytest -v
 
 All tests use `fakeredis` and mocked LLM clients — no live services required.
 
+## Stress / integration test
+
+`scripts/stress_test.py` exercises the full live stack — start it first with `docker-compose up --build --scale worker=5`, then run `python scripts/stress_test.py`. It checks input validation (empty file, non-`.py` file, unknown scan id), result reuse for an already-scanned file, the 5-concurrent-scan capacity limit (submits 6 scans at once and expects exactly one `429`), and end-to-end LLM rule correctness for a set of stress files against a known good/bad matrix.
+
 ## Adding a new review rule
 
 Edit `rules/rules.yaml` and add an entry:

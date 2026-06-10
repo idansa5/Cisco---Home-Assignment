@@ -9,7 +9,7 @@ from rq import Queue
 
 from app.config import settings
 from app.models import ScanStatusResponse, ScanSubmitResponse, ScanStatus
-from app.queue import CapacityError, enqueue_scan, is_at_capacity, make_queue
+from app.queue import CapacityError, enqueue_scan, make_queue
 from app.reviewer.rules import ruleset_version
 from app.store.base import ResultStore
 from app.store.redis_store import make_store
@@ -48,7 +48,7 @@ async def submit_scan(
         raise HTTPException(status_code=400, detail="Uploaded file is empty")
 
     rv = ruleset_version()
-    code_hash = hashlib.sha256(code_bytes + rv.encode()).hexdigest()
+    code_hash = hashlib.sha256(code_bytes + rv.encode() + settings.ollama_model.encode()).hexdigest()
 
     # Reuse: return the existing scan immediately without re-running
     existing_id = store.find_by_hash(code_hash)
@@ -58,15 +58,14 @@ async def submit_scan(
             content={"scan_id": existing_id, "status": ScanStatus.done, "reused": True},
         )
 
-    # Capacity gate — checked before creating the record to avoid orphans
-    if is_at_capacity(q):
-        raise HTTPException(status_code=429, detail="System at capacity, please try again later")
-
     scan_id = str(uuid.uuid4())
     code_str = code_bytes.decode("utf-8", errors="replace")
 
     store.create(scan_id, code_hash, rv, settings.result_ttl_seconds)
-    enqueue_scan(scan_id, code_str, rv, q=q)
+    try:
+        enqueue_scan(scan_id, code_str, rv, q=q)
+    except CapacityError as exc:
+        raise HTTPException(status_code=429, detail=str(exc))
 
     return ScanSubmitResponse(scan_id=scan_id, status=ScanStatus.queued, reused=False)
 

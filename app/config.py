@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     # Scan limits
     max_parallel_scans: int = 5
     result_ttl_seconds: int = 86400  # 24h
+    scan_job_timeout_seconds: int = 300  # max time before an in-flight scan is considered abandoned
 
 
 settings = Settings()
